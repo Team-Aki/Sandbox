@@ -33,10 +33,10 @@ public class PlayerController : MonoBehaviour
     }
     void Start()
     {
-        speed = 5.0f;
+        speed = 6.0f;
         gravity = 19.81f;
         turnSmoothTime = 0.1f;
-        jumpHeight = 7.0f;
+        jumpHeight = 14.0f;
         doubleJumpMultiplier = 1.0f;
         maxSpeed = 10.0f;
         timeZeroToMax = 5.8f;
