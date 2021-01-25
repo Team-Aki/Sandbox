@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private CharacterController controller;
+    public CharacterController controller;
     public Transform cam;
 
     //Movement Settings
