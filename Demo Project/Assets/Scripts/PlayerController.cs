@@ -77,8 +77,6 @@ public class PlayerController : MonoBehaviour
     {
         if (direction.magnitude >= 0.1) //get input to move
         {
-
-
             // Atan2 -> returns angle between x-axis and vector starting at 0 to x,y
             float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y; //face direction the player is moving
             float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime); //function to smooth the angle turn
@@ -95,7 +93,6 @@ public class PlayerController : MonoBehaviour
 
 
             controller.Move(moveDir.normalized * speed * Time.deltaTime);
-
 
         }
     }
