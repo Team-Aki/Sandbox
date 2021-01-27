@@ -121,14 +121,13 @@ public class PlayerController : MonoBehaviour
                 doubleJump = true;
                 directionY = jumpHeight;
             }
+
+
         }
-        else
+        else if(Input.GetButtonDown("Jump") && doubleJump)
         {
-            if (Input.GetButtonDown("Jump") && doubleJump)
-            {
-                directionY = jumpHeight * doubleJumpMultiplier;
-                doubleJump = false;
-            }
+            directionY = jumpHeight * doubleJumpMultiplier;
+            doubleJump = false;
         }
 
         return direction;
