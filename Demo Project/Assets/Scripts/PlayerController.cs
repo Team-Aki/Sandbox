@@ -19,7 +19,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float jumpHeight;
     [SerializeField] private float doubleJumpMultiplier;
     private bool doubleJump = false;
-    private bool sprint = false;
+    private bool isJumping = false;
+    private bool isSprinting = false;
 
 /*    //Acceleration settings
     [SerializeField] private float maxSpeed;
@@ -94,14 +95,10 @@ public class PlayerController : MonoBehaviour
             speed += forwardVelocity;
             speed = Mathf.Min(forwardVelocity, maxSpeed);*/
 
-            if (!sprint)
+            if (!isSprinting)
                 controller.Move(moveDir.normalized * speed * Time.deltaTime);
-            else if (sprint)
-            {
+            else        
                 controller.Move(moveDir.normalized * (speed * sprintMultiplier) * Time.deltaTime);
-                //sprint = false;
-            }
-            
 
         }
     }
@@ -115,9 +112,9 @@ public class PlayerController : MonoBehaviour
     private void InputCheck()
     {
         if (Input.GetButton("Sprint")) //on hold
-            sprint = true;
+            isSprinting = true;
         else
-            sprint = false;
+            isSprinting = false;
  
     }
 
@@ -125,16 +122,20 @@ public class PlayerController : MonoBehaviour
     {
         if (controller.isGrounded)
         {
+            isJumping = false;
+
             if (Input.GetButtonDown("Jump"))
             {
                 doubleJump = true;
                 //velocity.y = Mathf.Sqrt(jumpHeight * -2 * gravity); //better check to force player on the ground - eh no
                 directionY = jumpHeight;
+                isJumping = true;
             }
             if (Input.GetButtonDown("Jump") && direction.magnitude >= 0.1)
             {
                 doubleJump = true;
                 directionY = jumpHeight;
+                isJumping = true;
             }
 
 
@@ -143,6 +144,7 @@ public class PlayerController : MonoBehaviour
         {
             directionY = jumpHeight * doubleJumpMultiplier;
             doubleJump = false;
+            isJumping = true;
         }
 
         return direction;
