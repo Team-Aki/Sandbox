@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     //Movement Settings
 
     [SerializeField] private float speed;
+    [SerializeField] private float sprintMultiplier;
     [SerializeField] private float gravity;
     [SerializeField] private Vector3 velocity;
     [SerializeField] private float turnSmoothVelocity; //variables to smooth turning the character
@@ -18,12 +19,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float jumpHeight;
     [SerializeField] private float doubleJumpMultiplier;
     private bool doubleJump = false;
+    private bool sprint = false;
 
-    //Acceleration settings
+/*    //Acceleration settings
     [SerializeField] private float maxSpeed;
     [SerializeField] private float timeZeroToMax;
     [SerializeField] private float accelRatePerSec; //difference in velocity per sec
-    [SerializeField] private float forwardVelocity; //
+    [SerializeField] private float forwardVelocity; //*/
 
     private float directionY; //temp value for direction
 
@@ -34,15 +36,16 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         speed = 6.0f;
+        sprintMultiplier = 3.0f;
         gravity = 19.81f;
         turnSmoothTime = 0.1f;
         jumpHeight = 14.0f;
         doubleJumpMultiplier = 1.0f;
-        maxSpeed = 10.0f;
-        timeZeroToMax = 5.8f;
 
+/*        maxSpeed = 10.0f;
+        timeZeroToMax = 5.8f;
         accelRatePerSec = maxSpeed / timeZeroToMax; //equation of acceleration
-        forwardVelocity = 0.0f;
+        forwardVelocity = 0.0f;*/
     }
 
     // Update is called once per frame
@@ -53,18 +56,19 @@ public class PlayerController : MonoBehaviour
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
 
+        UpdateGravity();
+
+        InputCheck();
 
         Vector3 direction = new Vector3(horizontal, 0.0f, vertical).normalized; //normalize to not double the speed when pressing 2 or more keys
 
-        direction = JumpCheck(direction);
+        JumpCheck(direction); //direction = JumpCheck(direction);
 
         //velocity.y -= gravity + Time.deltaTime;
 
-        SetGravity();
-
         controller.Move(velocity * Time.deltaTime); // only Y axis for jump functionality
 
-        Walk(direction);
+        MoveCharacter(direction);
 
         if (controller.isGrounded) //&& velocity.y < 0
         {
@@ -73,7 +77,7 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    private void Walk(Vector3 direction)
+    private void MoveCharacter(Vector3 direction)
     {
         if (direction.magnitude >= 0.1) //get input to move
         {
@@ -86,21 +90,35 @@ public class PlayerController : MonoBehaviour
 
             JumpCheck(moveDir);
 
-
-            forwardVelocity += accelRatePerSec;
+            /*forwardVelocity += accelRatePerSec;
             speed += forwardVelocity;
-            speed = Mathf.Min(forwardVelocity, maxSpeed);
+            speed = Mathf.Min(forwardVelocity, maxSpeed);*/
 
-
-            controller.Move(moveDir.normalized * speed * Time.deltaTime);
+            if (!sprint)
+                controller.Move(moveDir.normalized * speed * Time.deltaTime);
+            else if (sprint)
+            {
+                controller.Move(moveDir.normalized * (speed * sprintMultiplier) * Time.deltaTime);
+                //sprint = false;
+            }
+            
 
         }
     }
 
-    private void SetGravity()
+    private void UpdateGravity()
     {
         directionY -= gravity * Time.deltaTime;
         velocity.y = directionY;
+    }
+
+    private void InputCheck()
+    {
+        if (Input.GetButton("Sprint")) //on hold
+            sprint = true;
+        else
+            sprint = false;
+ 
     }
 
     private Vector3 JumpCheck(Vector3 direction)
