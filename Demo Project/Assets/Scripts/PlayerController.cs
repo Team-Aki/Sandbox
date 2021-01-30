@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     //Movement Settings
 
     [SerializeField] private float speed;
+    [SerializeField] private float sprint;
     [SerializeField] private float sprintMultiplier;
     [SerializeField] private float gravity;
     [SerializeField] private Vector3 velocity;
@@ -42,6 +43,7 @@ public class PlayerController : MonoBehaviour
         turnSmoothTime = 0.1f;
         jumpHeight = 14.0f;
         doubleJumpMultiplier = 1.0f;
+        sprint = speed * sprintMultiplier;
 
 /*        maxSpeed = 10.0f;
         timeZeroToMax = 5.8f;
@@ -58,8 +60,6 @@ public class PlayerController : MonoBehaviour
         float vertical = Input.GetAxisRaw("Vertical");
 
         UpdateGravity();
-
-        InputCheck();
 
         Vector3 direction = new Vector3(horizontal, 0.0f, vertical).normalized; //normalize to not double the speed when pressing 2 or more keys
 
@@ -95,11 +95,10 @@ public class PlayerController : MonoBehaviour
             speed += forwardVelocity;
             speed = Mathf.Min(forwardVelocity, maxSpeed);*/
 
-            if (!isSprinting)
+            if (Input.GetButton("Sprint")) //on hold
+                controller.Move(moveDir.normalized * sprint * Time.deltaTime);
+            else
                 controller.Move(moveDir.normalized * speed * Time.deltaTime);
-            else        
-                controller.Move(moveDir.normalized * (speed * sprintMultiplier) * Time.deltaTime);
-
         }
     }
 
@@ -107,15 +106,6 @@ public class PlayerController : MonoBehaviour
     {
         directionY -= gravity * Time.deltaTime;
         velocity.y = directionY;
-    }
-
-    private void InputCheck()
-    {
-        if (Input.GetButton("Sprint")) //on hold
-            isSprinting = true;
-        else
-            isSprinting = false;
- 
     }
 
     private Vector3 JumpCheck(Vector3 direction)
