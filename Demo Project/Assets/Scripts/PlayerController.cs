@@ -17,11 +17,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float turnSmoothVelocity; //variables to smooth turning the character
     [SerializeField] private float turnSmoothTime;
 
-    [SerializeField] private float jumpHeight;
+  /*  [SerializeField] private float jumpHeight;
     [SerializeField] private float doubleJumpMultiplier;
     private bool doubleJump = false;
     private bool isJumping = false;
-    private bool isSprinting = false;
+    private bool isSprinting = false;*/
 
 /*    //Acceleration settings
     [SerializeField] private float maxSpeed;
@@ -38,11 +38,11 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         speed = 6.0f;
-        sprintMultiplier = 3.0f;
+        sprintMultiplier = 2.0f;
         gravity = 19.81f;
         turnSmoothTime = 0.1f;
-        jumpHeight = 14.0f;
-        doubleJumpMultiplier = 1.0f;
+/*        jumpHeight = 14.0f;
+        doubleJumpMultiplier = 1.0f;*/
         sprint = speed * sprintMultiplier;
 
 /*        maxSpeed = 10.0f;
@@ -63,7 +63,7 @@ public class PlayerController : MonoBehaviour
 
         Vector3 direction = new Vector3(horizontal, 0.0f, vertical).normalized; //normalize to not double the speed when pressing 2 or more keys
 
-        JumpCheck(direction); //direction = JumpCheck(direction);
+        //JumpCheck(direction); //direction = JumpCheck(direction);
 
         //velocity.y -= gravity + Time.deltaTime;
 
@@ -89,7 +89,7 @@ public class PlayerController : MonoBehaviour
 
             Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * (Vector3.forward); //face direction based on camera
 
-            JumpCheck(moveDir);
+            //JumpCheck(moveDir);
 
             /*forwardVelocity += accelRatePerSec;
             speed += forwardVelocity;
@@ -108,7 +108,7 @@ public class PlayerController : MonoBehaviour
         velocity.y = directionY;
     }
 
-    private Vector3 JumpCheck(Vector3 direction)
+   /* private Vector3 JumpCheck(Vector3 direction)
     {
         if (controller.isGrounded)
         {
@@ -138,5 +138,5 @@ public class PlayerController : MonoBehaviour
         }
 
         return direction;
-    }
+    }*/
 }
